@@ -23,9 +23,12 @@ public class PostFeedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_feed);
+
+        getPosts();
     }
 
-    public void getPosts(View view) {
+    public void getPosts() {
+        System.out.println("Getting Posts!");
         // Get reference to FirebaseFirestore instance
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -36,7 +39,7 @@ public class PostFeedActivity extends AppCompatActivity {
         db.setFirestoreSettings(settings);
 
         // Query firestore for the 5 most recently added posts/documents
-        Query query = db.collection("test-collection").orderBy("timestamp", Query.Direction.DESCENDING).limit(5);
+        Query query = db.collection("posts").orderBy("timestamp", Query.Direction.DESCENDING).limit(5);
 
         // Execute firestore query
         query.get()
@@ -52,34 +55,60 @@ public class PostFeedActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 TextView username = null;
                                 TextView message = null;
+                                TextView time = null;
+
+                                // Keep Track of which post we are currently iterating
                                 postIndex++;
                                 // Print out data from each document to console
                                 System.out.println(document.getId() + " => " + document.getData());
+                                System.out.println(document.getData().get("message"));
                                 switch (postIndex){
                                     case 1:
-                                        username = (TextView) findViewById(R.id.username1);
-                                        message = (TextView) findViewById(R.id.message1);
+                                        username = findViewById(R.id.username1);
+                                        message = findViewById(R.id.message1);
+                                        time = findViewById(R.id.time1);
                                         break;
                                     case 2:
-                                        username = (TextView) findViewById(R.id.username2);
-                                        message = (TextView) findViewById(R.id.message2);
+                                        username = findViewById(R.id.username2);
+                                        message = findViewById(R.id.message2);
+                                        time = findViewById(R.id.time2);
                                         break;
                                     case 3:
-                                        username = (TextView) findViewById(R.id.username3);
-                                        message = (TextView) findViewById(R.id.message3);
+                                        username = findViewById(R.id.username3);
+                                        message = findViewById(R.id.message3);
+                                        time = findViewById(R.id.time3);
                                         break;
                                     case 4:
-                                        username = (TextView) findViewById(R.id.username4);
-                                        message = (TextView) findViewById(R.id.message5);
+                                        username = findViewById(R.id.username4);
+                                        message = findViewById(R.id.message5);
+                                        time = findViewById(R.id.time4);
                                         break;
                                     case 5:
-                                        username = (TextView) findViewById(R.id.username5);
-                                        message = (TextView) findViewById(R.id.message5);
+                                        username = findViewById(R.id.username5);
+                                        message = findViewById(R.id.message5);
+                                        time = findViewById(R.id.time5);
                                         break;
                                 }
 
-                                username.setText(document.getId());
-                                message.setText(document.getData().toString());
+                                // Get amount of seconds that has passed between the post being created and now
+                                long diffSeconds = (System.currentTimeMillis() - (long)document.getData().get("timestamp")) / 1000;
+                                String diffString;
+
+                                // Format time string depending on when the post was created
+                                if(diffSeconds < 60) {
+                                    diffString = diffSeconds + " seconds ago";
+                                } else if(diffSeconds < 120 ) {
+                                    diffString = "1 minute ago";
+                                } else if(diffSeconds < 3600) {
+                                    diffString = diffSeconds/60 + " minutes ago";
+                                } else {
+                                    diffString = diffSeconds/3600 + " hours ago";
+                                }
+
+                                // Populate each of this posts designated fields
+                                username.setText((String)document.getData().get("username"));
+                                message.setText((String)document.getData().get("message"));
+                                time.setText(diffString);
                             }
                         } else {
                             // Error logging
