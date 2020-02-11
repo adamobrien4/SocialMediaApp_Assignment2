@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">SocialMediaApp Assignment 2</string>
+    <string name="create_post_btn">send</string>
+    <string name="create_post_txt">Whats on your mind </string>
+
 </resources>

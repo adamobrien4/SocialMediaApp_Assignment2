@@ -3,6 +3,7 @@ package ie.ul.socialmediaappassignment2;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,11 @@ public class PostFeedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_feed);
+    }
+
+    public void gotoCreatePosts(View view){
+        Intent intent = new Intent(this, CreatePostActivity.class);
+        startActivity(intent);
     }
 
     public void getPosts(View view) {
