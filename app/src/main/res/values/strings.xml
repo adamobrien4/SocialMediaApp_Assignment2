@@ -2,5 +2,9 @@
     <string name="app_name">SocialMediaApp Assignment 2</string>
     <string name="create_post_btn">send</string>
     <string name="create_post_txt">Whats on your mind </string>
+    <string name="placeholder_text">Loading ...</string>
 
+    <string name="create_post_button_text">Create New Post!</string>
+
+    <string name="reload_posts_button_text">Reload Posts</string>
 </resources>

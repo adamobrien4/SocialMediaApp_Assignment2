@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
@@ -51,10 +50,7 @@ public class PostFeedActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        System.out.println("OnCompleteListener");
                         if (task.isSuccessful()) {
-                            // Print amount of posts/documents found that match query
-                            System.out.println("Task ResultSet size : " + task.getResult().size());
                             // Loop through each document from query resultset
                             int postIndex = 0;
                             for (QueryDocumentSnapshot document : task.getResult()) {
@@ -64,8 +60,8 @@ public class PostFeedActivity extends AppCompatActivity {
 
                                 // Keep Track of which post we are currently iterating
                                 postIndex++;
-                                // Print out data from each document to console
-                                System.out.println(document.getId() + " => " + document.getData());
+
+                                // Point to correct screen elements for this post
                                 switch (postIndex){
                                     case 1:
                                         username = findViewById(R.id.username1);
@@ -84,7 +80,7 @@ public class PostFeedActivity extends AppCompatActivity {
                                         break;
                                     case 4:
                                         username = findViewById(R.id.username4);
-                                        message = findViewById(R.id.message5);
+                                        message = findViewById(R.id.message4);
                                         time = findViewById(R.id.time4);
                                         break;
                                     case 5:
@@ -113,6 +109,7 @@ public class PostFeedActivity extends AppCompatActivity {
                                 username.setText((String)document.getData().get("username"));
                                 message.setText((String)document.getData().get("message"));
                                 time.setText(diffString);
+
                             }
                         } else {
                             // Error logging
@@ -120,5 +117,9 @@ public class PostFeedActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    public void reloadPosts(View view) {
+        getPosts();
     }
 }
