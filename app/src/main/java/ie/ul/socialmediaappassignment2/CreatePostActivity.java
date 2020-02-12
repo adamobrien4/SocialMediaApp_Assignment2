@@ -2,7 +2,6 @@ package ie.ul.socialmediaappassignment2;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,9 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import java.util.*;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -29,13 +26,12 @@ public class CreatePostActivity extends AppCompatActivity {
 
 
     //Using button to send Post
-    public void sendPost(View view)
-    {
+    public void sendPost(View view) {
         //connecting to firebase and path
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference postDB = db.collection("posts");
 
-        String message = ((EditText)findViewById(R.id.create_post_txt)).getText().toString();
+        String message = ((EditText) findViewById(R.id.create_post_txt)).getText().toString();
 
         //Adding to the database
         Map<String, Object> post = new HashMap<>();
@@ -47,12 +43,16 @@ public class CreatePostActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        // Intent intent = new Intent();
-                        // startActivity(intent);
+                        openPostFeedActivity();
                     }
                 });
     }
 
+    public void openPostFeedActivity() {
+        Intent intent = new Intent(this, PostFeedActivity.class);
+        startActivity(intent);
+
+    }
 }
 
 
