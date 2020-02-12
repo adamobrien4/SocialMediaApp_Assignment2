@@ -12,6 +12,8 @@ import android.widget.TextView;
 import java.util.*;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -27,6 +29,9 @@ public class CreatePostActivity extends AppCompatActivity {
 
     //Using button to send Post
     public void sendPost(View view) {
+        // Get logged in user
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         //connecting to firebase and path
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference postDB = db.collection("posts");
@@ -35,7 +40,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
         //Adding to the database
         Map<String, Object> post = new HashMap<>();
-        post.put("username", "chob");
+        post.put("username", user.getDisplayName());
         post.put("message", message);
         post.put("timestamp", System.currentTimeMillis());
         postDB.document()
